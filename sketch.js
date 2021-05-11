@@ -1,71 +1,113 @@
+var mouse,mouseCheese,mouseDance,mouseCollide;
+var cat,catSit;catWalk,catCollide;
+var bg,bgImg;
 
-const Engine = Matter.Engine;
-const World = Matter.World;
-const Bodies = Matter.Bodies;
-const Body = Matter.Body;
-const Constraint = Matter.Constraint ; 
-var bobObject1,bobObject2,bobObject3 ,bobObject4,bobObject5;
-var ground;
-var roofObject ; 
 
-function preload()
-{
-	
+
+
+
+function preload() {
+    
+  mouseCheese = loadImage("mouse1.png");
+
+  mouseDance = loadAnimation("mouse2.png","mouse3.png");
+
+  mouseCollide = loadImage("mouse4.png",);
+
+
+  catSit = loadImage("cat1.png");
+
+  catWalk = loadAnimation("cat2.png","cat3.png");
+
+  catCollide = loadImage("cat4.png");
+
+
+    bgImg = loadImage("garden.png");
+
 }
 
-function setup() {
-	engine = Engine.create();
-	world = engine.world;
-	createCanvas(1300, 700);
+function setup(){
 
-bobObject1=new Bob(300,350,50);
-bobObject2=new Bob(350,350,50);
-bobObject3=new Bob(400,350,50);
-bobObject4=new Bob(450,350,50);
-bobObject5=new Bob(500,350,50);
-ground = new Roof(400,200,300,20);
-sling1= new Rope(bobObject1.body,ground.body,-50*2,0);
-sling2= new Rope(bobObject2.body,ground.body,-25*2,0);
-sling3= new Rope(bobObject3.body,ground.body,-0*2,0);
-sling4= new Rope(bobObject4.body,ground.body,25*2,0);
-sling5= new Rope(bobObject5.body,ground.body,50*2,0);
-	
+    createCanvas(1400,700);
+
+    bg = createSprite(200,200,20,20);
+
+    bg.addImage("bg",bgImg);
+
+    mouse = createSprite(100,420,20,20);
+
+    mouse.addAnimation("mouse1",mouseCheese);
 
 
 
-	
+    mouse.addAnimation("mouse4",mouseCollide);
+
+    mouse.addAnimation("mouse2,mouse3",mouseDance);
+
+    mouse.scale = 0.1;
 
 
-	Engine.run(engine);
-  
+    cat = createSprite(580,420,20,20);
+
+    cat.addAnimation("cat1",catSit);
+
+
+
+    cat.addAnimation("cat4",catCollide);
+
+    cat.addAnimation("cat2,cat3",catWalk);
+
+
+    cat.scale = 0.16;
+
+   // mouse.debug = true;
+
+   // cat.debug = true;
+    
+      /*&& mouse.x - cat.x < cat.width/2 + mouse.width/2
+      && mouse.y - cat.y < cat.height/2 + mouse.height/2
+      && cat.y - mouse.y <cat.height/2 + mouse.height/2 90 130 */
+
+
 }
-
 
 function draw() {
-  rectMode(CENTER);
-  background(230);
-  
-  drawSprites();
 
-	bobObject1.display();
-	bobObject2.display();
-	bobObject3.display();
-	bobObject4.display();
-	bobObject5.display();
-	ground.display();
-	sling1.display();
-  sling2.display();
-  sling3.display();
-  sling4.display();
-  sling5.display();
-	
+    background(255);
+ 
+    if(cat.x - mouse.x < (cat.width/2 - mouse.width/2)+20
+      ){
 
+        mouse.changeAnimation("mouse4",mouseCollide);
+
+        cat.velocityX = 0;
+
+        cat.changeAnimation("cat4",catCollide);
+
+    }
+
+    keyPressed();
+
+    drawSprites();
+
+    //text(mouseX+','+mouseY,580,100);
 }
 
-function keyPressed() { 
-	if (keyCode === UP_ARROW) 
-	{ Matter.Body.applyForce(bobObject1.body,bobObject1.body.position,{x:-100,y:-100}); } 
-} 
+
+function keyPressed(){
+
+  if(keyDown("left")) {
+
+    cat.velocityX = -3;
+
+    cat.changeAnimation("cat2,cat3",catWalk);
+
+    mouse.changeAnimation("mouse2,mouse3",mouseDance);
+
+    
 
 
+  }
 
+
+}
